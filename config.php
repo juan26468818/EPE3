@@ -16,7 +16,7 @@ if($dev){
 	$base_url = "http://localhost:8088";
 	// $base_url = "https://qa.finvoice.cl";
 }else{
-	$base_url = "https://www.amatistacentroestetico.com/";
+	$base_url = "https://epebd.000webhostapp.com/";
 }
 
 
