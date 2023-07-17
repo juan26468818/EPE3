@@ -1,13 +1,12 @@
 <?php
 
-// $db = new mysqli('192.168.56.1:3306', 'Laptop-Juan-Ayala', 'Mca.9879630', 'dssegltq_amatista');
-$db = new mysqli('192.168.56.1:3306', 'Laptop-Juan-Ayala', 'Mca.9879630', 'bd_epe');
+$db = new mysqli('localhost:3036', 'usuario', 'contraseña', 'bd_epe');
 if ($db->connect_error) {
     die("Error de conexión a la base de datos: " . $db->connect_error);
 }
 if(isset($_POST['get_alumnos'])){
     // Consultar la base de datos para verificar las credenciales
-    $q = "SELECT * FROM alumno a;";
+    $q = "SELECT * FROM Alumno a;";
     $stmt = mysqli_prepare($db, $q);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
@@ -28,7 +27,7 @@ if(isset($_POST['get_alumnos'])){
         array_push($data["alumnos"], $alumno);
     }
 
-    $q2 = "SELECT * FROM carreras a;";
+    $q2 = "SELECT * FROM Carreras a;";
     $stmt2 = mysqli_prepare($db, $q2);
     mysqli_stmt_execute($stmt2);
     $result2 = mysqli_stmt_get_result($stmt2);
@@ -41,7 +40,7 @@ if(isset($_POST['get_alumnos'])){
         array_push($data["carreras"], $carrera);
     }
 
-    $q3 = "SELECT * FROM mensualidad a;";
+    $q3 = "SELECT * FROM Mensualidad a;";
     $stmt3 = mysqli_prepare($db, $q3);
     mysqli_stmt_execute($stmt3);
     $result3 = mysqli_stmt_get_result($stmt3);
