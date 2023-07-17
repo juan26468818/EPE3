@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPE 3</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#" id="todos_los_alumnos">Todos los Alumnos</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" id="mensualidades">Mensualidades por Alumno</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#" id="carreras">Carreras</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+    </header>
+    <div class="container table_container" id="todos_los_alumnos_container">
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Todos los alumnos</h3>
+                    <table id="todos_los_alumnos_table">
+                        <thead>
+                            <tr>
+                                <th>RUT</th>
+                                <th>Nombre</th>
+                                <th>Fecha de Nacimiento</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody">
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+      </div>
+    <div class="container d-none table_container" id="mensualidades_container">
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Mensualidades</h3>
+                    <table id="mensualidades_table">
+                        <thead>
+                            <tr>
+                                <th>RUT</th>
+                                <th>Folio</th>
+                                <th>Fecha de Pago</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody_mensualidades">
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+      </div>
+    <div class="container d-none table_container" id="carreras_container">
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Carreras</h3>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Añadir Carrera</button>
+                    <table id="carreras_table">
+                        <thead>
+                            <tr>
+                                <th>ID Carrera</th>
+                                <th>Nombre Carrera</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody_carreras">
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Añadir carrera</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <label for="id_carrera">Código de la carrera</label>
+                <input type="number" placeholder="id..." name="id_carrera" id="idCarrera" required>
+                <label for="carrera">Nombre de la carrera</label>
+                <input type="text" placeholder="Nombre..." name="carrera" id="nombreCarrera" required> 
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-primary" id="guardar_carrera">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script>
+        $(document).ready(function() {
+            $('#todos_los_alumnos').click(function(){
+                $('#todos_los_alumnos').addClass('active')
+                $('#carreras').removeClass('active')
+                $('#mensualidades').removeClass('active')
+
+                $('#mensualidades_container').addClass('d-none')
+                $('#carreras_container').addClass('d-none')
+                $('#todos_los_alumnos_container').removeClass('d-none')
+            })
+            $('#mensualidades').click(function(){
+                $('#mensualidades').addClass('active')
+                $('#carreras').removeClass('active')
+                $('#todos_los_alumnos').removeClass('active')
+                
+                $('#todos_los_alumnos_container').addClass('d-none')
+                $('#carreras_container').addClass('d-none')
+                $('#mensualidades_container').removeClass('d-none')
+            })
+            $('#carreras').click(function(){
+                $('#carreras').addClass('active')
+                $('#mensualidades').removeClass('active')
+                $('#todos_los_alumnos').removeClass('active')
+
+                $('#todos_los_alumnos_container').addClass('d-none')
+                $('#mensualidades_container').addClass('d-none')
+                $('#carreras_container').removeClass('d-none')
+            })
+            $.ajax({
+                type: "POST",
+                url: "back_index.php",
+                data:{get_alumnos: "1"},
+                success: function(dataS){
+                    data = JSON.parse(dataS)
+                    console.log(data)
+                    let html= ""
+                    let html2= ""
+                    let html3= ""
+                    for(let i = 0; i < data['alumnos'].length; i++){
+                        html += `
+                           <tr>
+                               <td>${data['alumnos'][i].rut}</td>
+                               <td>${data['alumnos'][i].nombre}</td>
+                               <td>${data['alumnos'][i].fecha_nacimiento}</td>
+                           </tr>
+                       
+                       `
+                    }
+                    $('#tbody').append(html)
+
+                    for(let i = 0; i < data['carreras'].length; i++){
+                        html2 += `
+                           <tr>
+                               <td>${data['carreras'][i].id_carrera}</td>
+                               <td>${data['carreras'][i].nom_carrera}</td>
+                           </tr>
+                       
+                       `
+                    }
+                    $('#tbody_carreras').append(html2)
+                    for(let i = 0; i < data['mensualidad'].length; i++){
+                        html3 += `
+                            <tr>
+                                <td>${data['mensualidad'][i].rut}</td>
+                               <td>${data['mensualidad'][i].folio}</td>
+                               <td>${data['mensualidad'][i].fecha_pago}</td>
+
+                            </tr>
+                       
+                       `
+                    }
+                    $('#tbody_mensualidades').append(html3)
+                    $('#mensualidades_table').DataTable({
+                        language: {
+                            url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/es-ES.json',
+                        },
+                    })
+                    $('#carreras_table').DataTable({
+                        language: {
+                            url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/es-ES.json',
+                        },
+                    })
+                    $('#todos_los_alumnos_table').DataTable({
+                        language: {
+                            url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/es-ES.json',
+                        },
+                    })
+                }
+            })
+            $('#guardar_carrera').click(function(){
+                let nom_carrera=$('#nombreCarrera').val()
+                let id_carrera_input = $('#idCarrera').val()
+                $.ajax({
+                    url: "back_index.php",
+                    type: 'POST',
+                    data:{
+                        insert_carrera: "1",
+                        nombre_carrera: nom_carrera,
+                        id_carrera: id_carrera_input,
+                },
+                    success: function(data){
+                        location.reload()
+                    }
+                })
+            })
+        })
+
+
+      </script>
+</body>
+</html>

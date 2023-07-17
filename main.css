@@ -1,0 +1,12 @@
+.table_container{
+    width: 100vw;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+th, td{
+    border: 1px solid #adb5bd;
+    padding: .5rem;
+    text-align: center;
+}
